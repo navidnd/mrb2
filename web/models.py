@@ -30,6 +30,7 @@ class MainUser(AbstractUser):
     
     FirstName = models.CharField(max_length=128)
     LastName = models.CharField(max_length=128)
+    MainUserEmail = models.EmailField(max_length=70, blank=True, unique=True)
     PhoneNumber = models.CharField(max_length=128)
     gender = models.IntegerField(choices=Gender)
     UserHeight = models.SmallIntegerField()
