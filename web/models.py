@@ -30,7 +30,6 @@ class MainUser(AbstractUser):
     
     FirstName = models.CharField(max_length=128)
     LastName = models.CharField(max_length=128)
-    Email = models.EmailField(max_length=70, blank=True, unique=True)
     PhoneNumber = models.CharField(max_length=128)
     gender = models.IntegerField(choices=Gender)
     UserHeight = models.SmallIntegerField()
@@ -65,10 +64,19 @@ class MainUser(AbstractUser):
     
 
 
-class Exercise(models.Model):
-    user = models.ForeignKey(MainUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=128)
-    description = models.TextField()
+class ExersiseName (models.Model):
+
+    MovementName = models.CharField(max_length=225)
+    MovementPic = models.URLField()
+    MovementRest = models.IntegerField
+    MovementReps = models.SmallIntegerField
+
+    # SuperSet = model. IDK!
+    # TripleSet = models. IDK!
+   
+
+    def __str__(self):
+        return self.MovementName
 
 
 # Signal handler function to create exercises for the authenticated user
