@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+from django.core.validators import MinValueValidator
+
 
 
 
@@ -12,10 +14,6 @@ Gender = (
     (2, 'Not specified'),
 )
 
-HeightUnits = (
-    (0, 'Cm'),
-    (1, 'Inch')
-)
 
 WeightUnits = (
     (0, 'KG'),
@@ -39,12 +37,23 @@ class MainUser(AbstractUser):
     #date_joined: تاریخ عضویت کاربر در سیستم.
     #last_login: تاریخ آخرین ورود کاربر به سیستم.
 
-    PhoneNumber = models.CharField(max_length=128)
-    gender = models.IntegerField(choices=Gender)
-    UserHeight = models.SmallIntegerField()
-    UserWeight = models.SmallIntegerField()
+    PhoneNumber = models.CharField(max_length=15, null=True, blank=True)
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('not_specific', 'Not Specific'),
+    ]
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='not_specific')
+    UserHeight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
+    height_unit = models.CharField(max_length=2, choices=[('cm', 'cm'), ('in', 'in')], default='cm')
+    UserWeight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
+    WEIGHT_UNIT_CHOICES = [
+        ('kg', 'kg'),
+        ('lb', 'lb'),
+    ]
+    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNIT_CHOICES, default='kg')
     BirthDate = models.DateField(null=True, blank=True)
-    
+
 
 
     def calculate_age(self):
