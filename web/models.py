@@ -28,9 +28,17 @@ WeightUnits = (
 
 class MainUser(AbstractUser):
     
-    FirstName = models.CharField(max_length=128)
-    LastName = models.CharField(max_length=128)
-    MainUserEmail = models.EmailField(max_length=70, blank=True, unique=True)
+    #username: نام کاربری کاربر.
+    #first_name: نام کاربر.
+    #last_name: نام خانوادگی کاربر.
+    #email: ایمیل کاربر.
+    #password: رمز عبور کاربر.
+    #is_active: مشخص کننده فعال بودن حساب کاربری.
+    #is_staff: مشخص کننده اینکه آیا کاربر به عنوان کارمند (staff) در نظام مدیریت سایت است یا خیر.
+    #is_superuser: مشخص کننده اینکه آیا کاربر دسترسی مدیریتی فوق العاده (superuser) دارد یا خیر.
+    #date_joined: تاریخ عضویت کاربر در سیستم.
+    #last_login: تاریخ آخرین ورود کاربر به سیستم.
+
     PhoneNumber = models.CharField(max_length=128)
     gender = models.IntegerField(choices=Gender)
     UserHeight = models.SmallIntegerField()
