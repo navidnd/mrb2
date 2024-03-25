@@ -4,8 +4,6 @@ from datetime import date
 
 
 
-# 
-
 Gender = (
     (0, 'Male'),
     (1, 'Female'),
