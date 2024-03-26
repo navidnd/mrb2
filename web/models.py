@@ -24,6 +24,7 @@ WeightUnits = (
 # Create your models here.
 
 
+
 class MainUser(AbstractUser):
     
     #username: نام کاربری کاربر.
