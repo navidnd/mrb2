@@ -72,20 +72,33 @@ class MainUser(AbstractUser):
     
 
 
-class ExersiseName (models.Model):
+class ExersiseAdd (models.Model):
 
-    MovementName = models.CharField(max_length=225)
-    MovementPic = models.URLField()
-    MovementRest = models.IntegerField
-    MovementReps = models.SmallIntegerField
-
-    # SuperSet = model. IDK!
-    # TripleSet = models. IDK!
-   
+    BODY_PART_CHOICES = [
+        ('foot', 'Foot'),
+        ('chest', 'Chest'),
+        ('biceps', 'Biceps'),
+        ('triceps', 'Triceps'),
+        ('shoulders', 'Shoulders'),
+        ('back', 'Back'),
+        ('abs', 'Abs and Core'),
+        ('glutes', 'Glutes'),
+    ]
+    
+    movement_name = models.CharField(max_length=225)
+    movement_pic = models.URLField()
+    body_part = models.CharField(max_length=20,
+                                 choices=BODY_PART_CHOICES)
 
     def __str__(self):
-        return self.MovementName
+        return self.movement_name
+    
 
+class Movement(models.Model):
+    exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
+    repetitions = models.PositiveIntegerField()
+    duration = models.DurationField()
+   
 
 # Signal handler function to create exercises for the authenticated user
 
