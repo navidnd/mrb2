@@ -9,3 +9,8 @@ def register_view(request):
 
 def login_view(request):
     print('login')
+
+
+def My_Movement_view(request):
+    print('Add movements')
+
