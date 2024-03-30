@@ -1,12 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
-from django.core.validators import MinValueValidator
 
 
-
-
-# 
 
 Gender = (
     (0, 'Male'),
@@ -14,6 +10,10 @@ Gender = (
     (2, 'Not specified'),
 )
 
+HeightUnits = (
+    (0, 'Cm'),
+    (1, 'Inch')
+)
 
 WeightUnits = (
     (0, 'KG'),
@@ -22,6 +22,7 @@ WeightUnits = (
 
 
 # Create your models here.
+
 
 
 class MainUser(AbstractUser):
@@ -37,23 +38,12 @@ class MainUser(AbstractUser):
     #date_joined: تاریخ عضویت کاربر در سیستم.
     #last_login: تاریخ آخرین ورود کاربر به سیستم.
 
-    PhoneNumber = models.CharField(max_length=15, null=True, blank=True)
-    GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('not_specific', 'Not Specific'),
-    ]
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='not_specific')
-    UserHeight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
-    height_unit = models.CharField(max_length=2, choices=[('cm', 'cm'), ('in', 'in')], default='cm')
-    UserWeight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
-    WEIGHT_UNIT_CHOICES = [
-        ('kg', 'kg'),
-        ('lb', 'lb'),
-    ]
-    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNIT_CHOICES, default='kg')
+    PhoneNumber = models.CharField(max_length=128)
+    gender = models.IntegerField(choices=Gender)
+    UserHeight = models.SmallIntegerField()
+    UserWeight = models.SmallIntegerField()
     BirthDate = models.DateField(null=True, blank=True)
-
+    
 
 
     def calculate_age(self):
@@ -82,20 +72,33 @@ class MainUser(AbstractUser):
     
 
 
-class ExersiseName (models.Model):
+class ExersiseAdd (models.Model):
 
-    MovementName = models.CharField(max_length=225)
-    MovementPic = models.URLField()
-    MovementRest = models.IntegerField
-    MovementReps = models.SmallIntegerField
-
-    # SuperSet = model. IDK!
-    # TripleSet = models. IDK!
-   
+    BODY_PART_CHOICES = [
+        ('foot', 'Foot'),
+        ('chest', 'Chest'),
+        ('biceps', 'Biceps'),
+        ('triceps', 'Triceps'),
+        ('shoulders', 'Shoulders'),
+        ('back', 'Back'),
+        ('abs', 'Abs and Core'),
+        ('glutes', 'Glutes'),
+    ]
+    
+    movement_name = models.CharField(max_length=225)
+    movement_pic = models.URLField()
+    body_part = models.CharField(max_length=20,
+                                 choices=BODY_PART_CHOICES)
 
     def __str__(self):
-        return self.MovementName
+        return self.movement_name
+    
 
+class Movement(models.Model):
+    exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
+    repetitions = models.PositiveIntegerField()
+    duration = models.DurationField()
+   
 
 # Signal handler function to create exercises for the authenticated user
 
