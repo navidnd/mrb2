@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+from django.contrib.auth.hashers import make_password
+
 
 
 
@@ -97,8 +99,9 @@ class ExersiseAdd (models.Model):
 class Movement(models.Model):
     exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
     repetitions = models.PositiveIntegerField()
-    duration = models.DurationField()
-   
+    sets = models.DurationField()
+    rest_duration = models.DurationField()
+
 
 # Signal handler function to create exercises for the authenticated user
 
