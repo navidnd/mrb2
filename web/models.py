@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 
 
 
+
 Gender = (
     (0, 'Male'),
     (1, 'Female'),
@@ -21,7 +22,6 @@ WeightUnits = (
     (0, 'KG'),
     (1, 'Pound')
 )
-
 
 # Create your models here.
 
@@ -96,10 +96,10 @@ class ExersiseAdd (models.Model):
         return self.movement_name
     
 
-class Movement(models.Model):
+class move(models.Model):
     exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
     repetitions = models.PositiveIntegerField()
-    sets = models.DurationField()
+    sets = models.PositiveIntegerField()
     rest_duration = models.DurationField()
 
 
