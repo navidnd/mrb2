@@ -1,7 +1,11 @@
 from django.contrib import admin
-from .models import ExersiseAdd, move
+from .models import ExersiseAdd, MovementAdd, UserWeight, Sizes, Fat, Muscle
 
 admin.site.register(ExersiseAdd)
-admin.site.register(move)
+admin.site.register(MovementAdd)
+admin.site.register(UserWeight)
+admin.site.register(Sizes)
+admin.site.register(Fat)
+admin.site.register(Muscle)
 
 # Register your models here.

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
 from django.contrib.auth.hashers import make_password
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 
@@ -18,10 +18,10 @@ HeightUnits = (
     (1, 'Inch')
 )
 
-WeightUnits = (
-    (0, 'KG'),
-    (1, 'Pound')
-)
+WEIGHT_UNIT_CHOICES = [
+        ('kg', 'Kilogram'),
+        ('lb', 'Pound'),
+    ]
 
 # Create your models here.
 
@@ -39,12 +39,12 @@ class MainUser(AbstractUser):
     #is_superuser: مشخص کننده اینکه آیا کاربر دسترسی مدیریتی فوق العاده (superuser) دارد یا خیر.
     #date_joined: تاریخ عضویت کاربر در سیستم.
     #last_login: تاریخ آخرین ورود کاربر به سیستم.
-
+    
     PhoneNumber = models.CharField(max_length=128)
     gender = models.IntegerField(choices=Gender)
     UserHeight = models.SmallIntegerField()
-    UserWeight = models.SmallIntegerField()
     BirthDate = models.DateField(null=True, blank=True)
+
     
 
 
@@ -89,19 +89,75 @@ class ExersiseAdd (models.Model):
     
     movement_name = models.CharField(max_length=225)
     movement_pic = models.URLField()
-    body_part = models.CharField(max_length=20,
-                                 choices=BODY_PART_CHOICES)
+    body_part = models.CharField(max_length=20,choices=BODY_PART_CHOICES)
 
     def __str__(self):
         return self.movement_name
+
+
+
+
+
+# normal users
+
+
+
+
+
+
+
+class MovementAdd (models.Model):
+    exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
+    repetitions = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    rest_time = models.PositiveIntegerField(default=0, verbose_name='Rest Time (seconds)')
+
+    class Meta:
+        verbose_name = 'Movement'
+
+    def __str__(self):
+        return f"{self.exercise} - Repetitions: {self.repetitions} - Rest Time: {self.rest_time} seconds"
+
+
+
+class UserWeight(models.Model):
+    
+    user = models.ForeignKey(MainUser, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    weight_date = models.DateField(auto_now_add=True)
+    target_weight = models.FloatField(null=True, blank=True)
+    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNIT_CHOICES, default='kg')
+
+    def __str__(self):
+        return f"{self.user}'s weight on {self.weight_date}"
     
 
-class move(models.Model):
-    exercise = models.ForeignKey(ExersiseAdd, on_delete=models.CASCADE)
-    repetitions = models.PositiveIntegerField()
-    sets = models.PositiveIntegerField()
-    rest_duration = models.DurationField()
+class Sizes(models.Model):
+    user = models.ForeignKey(MainUser, on_delete=models.CASCADE)
+    biceps = models.FloatField(null=True, blank=True)
+    wrist = models.FloatField(null=True, blank=True)
+    chest = models.FloatField(null=True, blank=True)
+    hip = models.FloatField(null=True, blank=True)
+    leg = models.FloatField(null=True, blank=True)
+    recorded_at = models.DateTimeField(auto_now_add=True)
+    
+
+    def __str__(self):
+        return f"Sizes of {self.user} recorded at {self.recorded_at}"
 
 
-# Signal handler function to create exercises for the authenticated user
+class Fat(models.Model):
+    user = models.ForeignKey(MainUser, on_delete=models.CASCADE)
+    fat_percentage = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    recorded_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Fat percentage of {self.user} recorded at {self.recorded_at}"
+    
+class Muscle(models.Model):
+    user = models.ForeignKey(MainUser, on_delete=models.CASCADE)
+    muscle_percentage = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    recorded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Muscle percentage of {self.user} recorded at {self.recorded_at}"
+    

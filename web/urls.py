@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('Move', views.My_Movement_view, name='Move'),
+    path('movementadd/', views.MovementAdd, name='MovementAdd'),
 
     path('register', views.register_view, name='register'),
     path('login', views.login_view, name='login'),
