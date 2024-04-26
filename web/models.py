@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from datetime import date
 from django.contrib.auth.hashers import make_password
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 
 
@@ -23,29 +24,25 @@ WEIGHT_UNIT_CHOICES = [
         ('lb', 'Pound'),
     ]
 
-# Create your models here.
+# models are here.
 
 
-
-class MainUser(AbstractUser):
+class MainUser(models.Model):
     
-    #username: نام کاربری کاربر.
-    #first_name: نام کاربر.
-    #last_name: نام خانوادگی کاربر.
-    #email: ایمیل کاربر.
-    #password: رمز عبور کاربر.
-    #is_active: مشخص کننده فعال بودن حساب کاربری.
-    #is_staff: مشخص کننده اینکه آیا کاربر به عنوان کارمند (staff) در نظام مدیریت سایت است یا خیر.
-    #is_superuser: مشخص کننده اینکه آیا کاربر دسترسی مدیریتی فوق العاده (superuser) دارد یا خیر.
-    #date_joined: تاریخ عضویت کاربر در سیستم.
+    username= models.CharField(max_length=150, default='', unique = True)
+    first_name= models.CharField(max_length=30, blank=True)
+    last_name= models.CharField(max_length=150, blank=True)
+    email= models.EmailField(blank=False, unique=True, default='')
+    password= models.CharField(max_length=150, default='')
+    is_active= bool = ...
+    is_staff= bool = ...
+    is_superuser= bool = ...
+    #date_joined= models.DateTimeField(auto_now_add=True, default='')
     #last_login: تاریخ آخرین ورود کاربر به سیستم.
-    
     PhoneNumber = models.CharField(max_length=128)
     gender = models.IntegerField(choices=Gender)
     UserHeight = models.SmallIntegerField()
     BirthDate = models.DateField(null=True, blank=True)
-
-    
 
 
     def calculate_age(self):
@@ -93,15 +90,6 @@ class ExersiseAdd (models.Model):
 
     def __str__(self):
         return self.movement_name
-
-
-
-
-
-# normal users
-
-
-
 
 
 

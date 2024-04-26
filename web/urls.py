@@ -1,11 +1,14 @@
 from django.urls import path
-from . import views
+from .views import MainUserCreateAPIView
+
 
 
 urlpatterns = [
-    path('movementadd/', views.MovementAdd, name='MovementAdd'),
 
-    path('register', views.register_view, name='register'),
-    path('login', views.login_view, name='login'),
-    # دیگر الگوهای آدرس مربوط به حساب‌ها
+    path('api/create_user/', MainUserCreateAPIView.as_view(), name='create_user'),
+
+    #path('login', views.login, name='login'),
+    #path('register', views.register, name='register'),
+    #path('dashboard', views.dashboard, name='dashboard'),
+
 ]
