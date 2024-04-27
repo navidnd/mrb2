@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import ExersiseAdd, MovementAdd, UserWeight, Sizes, Fat, Muscle
+from .models import ExersiseAdd, MovementAdd, UserWeight, Sizes, Fat, Muscle, MainUser
 
+admin.site.register(MainUser)
 admin.site.register(ExersiseAdd)
 admin.site.register(MovementAdd)
 admin.site.register(UserWeight)

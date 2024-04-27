@@ -20,8 +20,8 @@ HeightUnits = (
 )
 
 WEIGHT_UNIT_CHOICES = [
-        ('kg', 'Kilogram'),
-        ('lb', 'Pound'),
+        (0, 'Kilogram'),
+        (1, 'Pound')
     ]
 
 # models are here.
